@@ -1,4 +1,5 @@
-FROM ubuntu:22.04 as base
+ARG BASE_IMAGE=ubuntu:22.04
+FROM ${BASE_IMAGE} as base
 RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-pip python3-venv \
     git \

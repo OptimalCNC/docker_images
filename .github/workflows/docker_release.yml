@@ -8,11 +8,16 @@ jobs:
     permissions:
       contents: read
       packages: write
-    env:
-      QT_VERSION: 6.5.3
+    strategy:
+      matrix:
+        base-image:
+          - ubuntu:22.04
+          - ubuntu:24.04
+        qt-version:
+          - 6.5.3
+          - 6.4.2
     steps:
       - uses: actions/checkout@v4
-      
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -24,6 +29,11 @@ jobs:
           repo: ${{ github.repository}}
       
       - run: echo IMAGE_URI="ghcr.io/${{ env.REPO_SLUG }}" >> ${GITHUB_ENV}
+      - name: Extract Ubuntu version
+        run: |
+          UBUNTU_VERSION=$(echo "${{ matrix.base-image }}" | cut -d':' -f2)
+          echo "UBUNTU_VERSION=${UBUNTU_VERSION}" >> ${GITHUB_ENV}
+          echo "IMAGE_FULL_NAME=${{ env.IMAGE_URI }}:${UBUNTU_VERSION}-${{ matrix.qt-version }}" >> ${GITHUB_ENV}
       
       - uses: docker/build-push-action@v5
         with:
@@ -31,15 +41,14 @@ jobs:
           file: ./Dockerfile
           push: false # should push after next step success
           build-args: |
-            QT_VERSION=${{ env.QT_VERSION }}
+            BASE_IMAGE=${{ matrix.base-image }}
+            QT_VERSION=${{ matrix.qt-version }}
           tags: |
-            ${{ env.IMAGE_URI }}:latest
-            ${{ env.IMAGE_URI }}:${{ env.QT_VERSION }}
-            ${{ env.IMAGE_URI }}:${{ env.QT_VERSION }}-base-tools
-
+            ${{ env.IMAGE_FULL_NAME }}
+      
       - uses: addnab/docker-run-action@v3
         with:
-          image: ${{ env.IMAGE_URI }}:6.5.3-base-tools
+          image: ${{ env.IMAGE_FULL_NAME }}
           run: |
             git clone https://github.com/euler0/mini-cmake-qt.git
             git reset --hard 39d568a05318bec619f470942a18980968df22c3
@@ -48,6 +57,4 @@ jobs:
             cmake --build build
 
       - run: |
-          docker push ${{ env.IMAGE_URI }}:latest
-          docker push ${{ env.IMAGE_URI }}:${{ env.QT_VERSION }}
-          docker push ${{ env.IMAGE_URI }}:${{ env.QT_VERSION }}-base-tools
+          docker push ${{ env.IMAGE_FULL_NAME }}

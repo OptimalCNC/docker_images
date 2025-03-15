@@ -5,13 +5,14 @@ This repository provides an image with Qt 6.5.3 installed on Ubuntu 22.04.
 To use, simply pull the image from Docker Hub:
 
 ```bash
-docker pull ghcr.io/optimalcnc/qt_image
+docker pull ghcr.io/optimalcnc/qt_image:24.04-6.4.2
 ```
 
 Available tags:
-- `latest`: the same as `6.5.3`
-- `6.5.3`: the same as `6.5.3-base-tools`
-- `6.5.3-base-tools`: it installs `qtbase` component with dependencies; We also include `clang-tidy` and `clang-format` for code analysis and formatting.
+- `22.04-6.5.3`: Qt 6.5.3 on Ubuntu 22.04 with qtbase component and development tools
+- `22.04-6.4.2`: Qt 6.4.2 on Ubuntu 22.04 with qtbase component and development tools
+- `24.04-6.5.3`: Qt 6.5.3 on Ubuntu 24.04 with qtbase component and development tools
+- `24.04-6.4.2`: Qt 6.4.2 on Ubuntu 24.04 with qtbase component and development tools
 
 ## Adding more Qt components
 
