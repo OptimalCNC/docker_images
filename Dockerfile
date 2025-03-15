@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=ubuntu:22.04
 FROM ${BASE_IMAGE} as base
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    git \
+    git ca-certificates \
     build-essential \
     # Qt dependencies
     libglx-dev libgl1-mesa-dev \
