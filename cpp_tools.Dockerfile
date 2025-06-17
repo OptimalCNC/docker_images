@@ -7,9 +7,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-ENV UV_TOOL_BIN_DIR=/opt/uv/bin \
-    UV_TOOL_DIR=/opt/uv/venv \
-    PATH=$UV_TOOL_BIN_DIR:$PATH
+ENV UV_TOOL_BIN_DIR=/opt/uv/bin
+ENV UV_TOOL_DIR=/opt/uv/venv
+ENV PATH=$UV_TOOL_BIN_DIR:$PATH
 
 COPY --from=ghcr.io/astral-sh/uv:0.6.6 /uv $UV_TOOL_BIN_DIR/
 
