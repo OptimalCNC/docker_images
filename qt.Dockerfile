@@ -1,10 +1,10 @@
 ARG BASE_IMAGE=cpp_tools:latest
-ARG QT_VERSION
 FROM ${BASE_IMAGE} as base
 
+ARG QT_VERSION
+ENV QT_VERSION=${QT_VERSION}
 ENV QT_HOME=/opt/Qt
 ENV QT_INSTALL_PATH=${QT_HOME}/${QT_VERSION}/gcc_64
-ENV QT_VERSION=${QT_VERSION}
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libglx-dev \

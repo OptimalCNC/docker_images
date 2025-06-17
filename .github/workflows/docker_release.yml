@@ -13,7 +13,7 @@ jobs:
         base-image:
           - ubuntu:22.04
           - ubuntu:24.04
-        qt_version:
+        qt-version:
           - 6.5.3
           - 6.4.2
     steps:
@@ -53,7 +53,7 @@ jobs:
           push: false # should push after next step success
           build-args: |
             BASE_IMAGE=${{ env.IMAGE_URI }}:cpp-${{ env.UBUNTU_VERSION }}
-            QT_VERSION=${{ matrix.qt_version }}
+            QT_VERSION=${{ matrix.qt-version }}
           tags: |
             ${{ env.IMAGE_FULL_NAME }}
 
