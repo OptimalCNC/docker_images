@@ -62,8 +62,8 @@ jobs:
           image: ${{ env.IMAGE_FULL_NAME }}
           run: |
             git clone https://github.com/euler0/mini-cmake-qt.git
-            git reset --hard 39d568a05318bec619f470942a18980968df22c3
             cd mini-cmake-qt
+            git reset --hard 39d568a05318bec619f470942a18980968df22c3
             cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug
             cmake --build build
 
