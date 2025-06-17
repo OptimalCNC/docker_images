@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     git \
     ca-certificates \
     build-essential \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 ENV LLVM_TOOL_VERSION=20
