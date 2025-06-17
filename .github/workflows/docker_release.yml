@@ -52,7 +52,7 @@ jobs:
           file: ./qt.Dockerfile
           push: false # should push after next step success
           build-args: |
-            BASE_IMAGE=${{ env.IMAGE_URI }}:cpp-${{ env.UBUNTU_VERSION }}
+            BASE_IMAGE=${{ env.IMAGE_URI }}:cpp_tools-${{ env.UBUNTU_VERSION }}
             QT_VERSION=${{ matrix.qt-version }}
           tags: |
             ${{ env.IMAGE_FULL_NAME }}
