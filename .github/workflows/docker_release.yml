@@ -33,7 +33,7 @@ jobs:
         run: |
           UBUNTU_VERSION=$(echo "${{ matrix.base-image }}" | cut -d':' -f2)
           echo "UBUNTU_VERSION=${UBUNTU_VERSION}" >> ${GITHUB_ENV}
-          echo "IMAGE_FULL_NAME=${{ env.IMAGE_URI }}:${UBUNTU_VERSION}-${{ matrix.qt-version }}" >> ${GITHUB_ENV}
+          echo "IMAGE_FULL_NAME=${{ env.IMAGE_URI }}:${UBUNTU_VERSION}-qt-${{ matrix.qt-version }}" >> ${GITHUB_ENV}
 
       - name: Build & push cpp_tools base image
         uses: docker/build-push-action@v5
@@ -44,7 +44,7 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ matrix.base-image }}
           tags: |
-            ${{ env.IMAGE_URI }}:cpp-${{ env.UBUNTU_VERSION }}
+            ${{ env.IMAGE_URI }}:cpp_tools-${{ env.UBUNTU_VERSION }}
 
       - uses: docker/build-push-action@v5
         with:
