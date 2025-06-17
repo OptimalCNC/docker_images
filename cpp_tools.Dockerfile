@@ -14,16 +14,17 @@ RUN apt-get update && \
     apt-get install -y gnupg wget ca-certificates build-essential && \
     wget -qO- ${LLVM_APT_BASE_URL}/llvm-snapshot.gpg.key \
       | gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg && \
+    . /etc/os-release && \
     echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] \
       ${LLVM_APT_BASE_URL}/${UBUNTU_CODENAME}/ \
-      llvm-toolchain-${UBUNTU_CODENAME}-${LLVM_TOOL_VERSION} main" \
+      llvm-toolchain-${VERSION_CODENAME}-${LLVM_TOOL_VERSION} main" \
       > /etc/apt/sources.list.d/llvm.list && \
     apt-get update && \
     apt-get install -y \
       clangd-${LLVM_TOOL_VERSION} \
       clang-tidy-${LLVM_TOOL_VERSION} \
       clang-format-${LLVM_TOOL_VERSION} && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* \
 
 ENV UV_TOOL_BIN_DIR=/opt/uv/bin
 ENV UV_TOOL_DIR=/opt/uv/venv
