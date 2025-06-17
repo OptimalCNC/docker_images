@@ -24,7 +24,7 @@ RUN apt-get update && \
       clangd-${LLVM_TOOL_VERSION} \
       clang-tidy-${LLVM_TOOL_VERSION} \
       clang-format-${LLVM_TOOL_VERSION} && \
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/*
 
 ENV UV_TOOL_BIN_DIR=/opt/uv/bin
 ENV UV_TOOL_DIR=/opt/uv/venv
