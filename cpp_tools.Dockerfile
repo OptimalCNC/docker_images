@@ -27,6 +27,14 @@ RUN apt-get update && \
       clang-format-${LLVM_TOOL_VERSION} && \
     rm -rf /var/lib/apt/lists/*
 
+#—— Create Versionless Alias Commands for clang Tools ——
+RUN update-alternatives --install /usr/bin/clang-format clang-format \
+      /usr/bin/clang-format-${LLVM_TOOL_VERSION} ${LLVM_TOOL_VERSION} \
+ && update-alternatives --install /usr/bin/clang-tidy   clang-tidy   \
+      /usr/bin/clang-tidy-${LLVM_TOOL_VERSION}   ${LLVM_TOOL_VERSION} \
+ && update-alternatives --install /usr/bin/clangd       clangd       \
+      /usr/bin/clangd-${LLVM_TOOL_VERSION}         ${LLVM_TOOL_VERSION}
+
 ENV UV_TOOL_BIN_DIR=/opt/uv/bin
 ENV UV_TOOL_DIR=/opt/uv/venv
 ENV PATH=$UV_TOOL_BIN_DIR:$PATH
