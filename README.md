@@ -15,10 +15,10 @@ docker pull ghcr.io/optimalcnc/docker_images:cpp_tools-22.04
 
 - `cpp_tools-22.04`: Ubuntu 22.04 C++ development tools base image
 - `cpp_tools-24.04`: Ubuntu 24.04 C++ development tools base image
-- `22.04-qt-6.5.3`: Qt 6.5.3 on Ubuntu 22.04, includes qtbase and ICU
-- `22.04-qt-6.4.2`: Qt 6.4.2 on Ubuntu 22.04, includes qtbase and ICU
-- `24.04-qt-6.5.3`: Qt 6.5.3 on Ubuntu 24.04, includes qtbase and ICU
-- `24.04-qt-6.4.2`: Qt 6.4.2 on Ubuntu 24.04, includes qtbase and ICU
+- `qt-6.5.3-22.04`: Qt 6.5.3 on Ubuntu 22.04, includes qtbase and ICU
+- `qt-6.4.2-22.04`: Qt 6.4.2 on Ubuntu 22.04, includes qtbase and ICU
+- `qt-6.5.3-24.04`: Qt 6.5.3 on Ubuntu 24.04, includes qtbase and ICU
+- `qt-6.4.2-24.04`: Qt 6.4.2 on Ubuntu 24.04, includes qtbase and ICU
 
 ## CI/CD
 
@@ -26,7 +26,7 @@ Image build and release are managed by GitHub Actions workflow: `.github/workflo
 
 1. Define a build matrix for Ubuntu versions (`22.04`, `24.04`) and Qt versions (`6.5.3`, `6.4.2`).
 2. Build and push the C++ Tools Base Image (`cpp_tools-<UBUNTU>`).
-3. Build and push the Qt Image (`<UBUNTU>-qt-<QT_VERSION>`) based on the base image.
+3. Build and push the Qt Image (`qt-<QT_VERSION>-<UBUNTU>`) based on the base image.
 4. Run sample compile tests, then push final Qt images to `ghcr.io/optimalcnc/docker_images`.
 
 ## Adding More Qt Components

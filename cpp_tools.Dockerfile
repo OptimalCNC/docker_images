@@ -39,8 +39,8 @@ ENV UV_TOOL_BIN_DIR=/opt/uv/bin
 ENV UV_TOOL_DIR=/opt/uv/venv
 ENV PATH=$UV_TOOL_BIN_DIR:$PATH
 
-COPY --from=ghcr.io/astral-sh/uv:0.6.6 /uv $UV_TOOL_BIN_DIR/
+COPY --from=ghcr.io/astral-sh/uv:0.7.13 /uv $UV_TOOL_BIN_DIR/
 
 RUN uv tool install pre-commit && \
-    uv tool install ruff@0.9.6 && \
+    uv tool install ruff@0.12.0 && \
     uv tool install cmakelang
