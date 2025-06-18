@@ -25,34 +25,45 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - run: echo REPO_SLUG="${repo,,}" >> ${GITHUB_ENV}
-        env: 
+        env:
           repo: ${{ github.repository}}
-      
+
       - run: echo IMAGE_URI="ghcr.io/${{ env.REPO_SLUG }}" >> ${GITHUB_ENV}
       - name: Extract Ubuntu version
         run: |
           UBUNTU_VERSION=$(echo "${{ matrix.base-image }}" | cut -d':' -f2)
           echo "UBUNTU_VERSION=${UBUNTU_VERSION}" >> ${GITHUB_ENV}
-          echo "IMAGE_FULL_NAME=${{ env.IMAGE_URI }}:${UBUNTU_VERSION}-${{ matrix.qt-version }}" >> ${GITHUB_ENV}
-      
+          echo "IMAGE_FULL_NAME=${{ env.IMAGE_URI }}:qt-${{ matrix.qt-version }}-${UBUNTU_VERSION}" >> ${GITHUB_ENV}
+
+      - name: Build & push cpp_tools base image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./cpp_tools.Dockerfile
+          push: true
+          build-args: |
+            BASE_IMAGE=${{ matrix.base-image }}
+          tags: |
+            ${{ env.IMAGE_URI }}:cpp_tools-${{ env.UBUNTU_VERSION }}
+
       - uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./qt.Dockerfile
           push: false # should push after next step success
           build-args: |
-            BASE_IMAGE=${{ matrix.base-image }}
+            BASE_IMAGE=${{ env.IMAGE_URI }}:cpp_tools-${{ env.UBUNTU_VERSION }}
             QT_VERSION=${{ matrix.qt-version }}
           tags: |
             ${{ env.IMAGE_FULL_NAME }}
-      
+
       - uses: addnab/docker-run-action@v3
         with:
           image: ${{ env.IMAGE_FULL_NAME }}
           run: |
             git clone https://github.com/euler0/mini-cmake-qt.git
-            git reset --hard 39d568a05318bec619f470942a18980968df22c3
             cd mini-cmake-qt
+            git reset --hard 39d568a05318bec619f470942a18980968df22c3
             cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Debug
             cmake --build build
 
