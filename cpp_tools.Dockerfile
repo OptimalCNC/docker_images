@@ -6,7 +6,32 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     build-essential \
     cmake \
+    curl zip unzip tar pkg-config \
     && rm -rf /var/lib/apt/lists/*
+
+# vcpkg
+# the cache dir of vcpkg is meant to be static.
+# thus, we do not place it under ${CACHE_DIR} which is suggested to be mounted as a volume in devcontainer.
+ENV VCPKG_ROOT=/opt/vcpkg
+ENV VCPKG_CACHE_DIR=${VCPKG_ROOT}/cache
+ENV VCPKG_BINARY_CACHE_PATH=${VCPKG_CACHE_DIR}/binary
+ENV VCPKG_ASSET_CACHE_PATH=${VCPKG_CACHE_DIR}/asset
+ENV VCPKG_DEFAULT_BINARY_CACHE=${VCPKG_BINARY_CACHE_PATH}
+ENV VCPKG_DOWNLOADS=${VCPKG_ASSET_CACHE_PATH}
+ENV VCPKG_FEATURE_FLAGS=manifests,registries,binarycaching
+ENV VCPKG_BINARY_SOURCES=clear;files,${VCPKG_BINARY_CACHE_PATH},readwrite
+ENV VCPKG_ASSET_SOURCES=clear;x-assetcache,${VCPKG_ASSET_CACHE_PATH}
+ENV X_VCPKG_REGISTRIES_CACHE=${VCPKG_CACHE_DIR}/registries
+ENV PATH=${VCPKG_ROOT}:$PATH
+ENV CMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
+# According to how vcpkg versioning works, we need a full clone of the repository.
+# https://learn.microsoft.com/en-us/vcpkg/users/versioning-troubleshooting#shallow-clone-version-constraint
+RUN git clone https://github.com/microsoft/vcpkg.git ${VCPKG_ROOT} && \
+    cd ${VCPKG_ROOT} && \
+    ./bootstrap-vcpkg.sh -disableMetrics && \
+    mkdir -p ${X_VCPKG_REGISTRIES_CACHE} \
+             ${VCPKG_BINARY_CACHE_PATH} \
+             ${VCPKG_ASSET_CACHE_PATH}
 
 ENV LLVM_TOOL_VERSION=20
 ENV LLVM_APT_BASE_URL=https://apt.llvm.org
