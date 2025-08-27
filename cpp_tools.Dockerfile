@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 
 # vcpkg
-# the cache dir of vcpkg is meant to be static.
-# thus, we do not place it under ${CACHE_DIR} which is suggested to be mounted as a volume in devcontainer.
 ENV VCPKG_ROOT=/opt/vcpkg
 ENV VCPKG_CACHE_DIR=${VCPKG_ROOT}/cache
 ENV VCPKG_BINARY_CACHE_PATH=${VCPKG_CACHE_DIR}/binary
