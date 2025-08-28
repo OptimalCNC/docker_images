@@ -25,11 +25,11 @@ ENV CMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 # According to how vcpkg versioning works, we need a full clone of the repository.
 # https://learn.microsoft.com/en-us/vcpkg/users/versioning-troubleshooting#shallow-clone-version-constraint
 RUN git clone https://github.com/microsoft/vcpkg.git ${VCPKG_ROOT} && \
-    cd ${VCPKG_ROOT} && \
-    ./bootstrap-vcpkg.sh -disableMetrics && \
     mkdir -p ${X_VCPKG_REGISTRIES_CACHE} \
              ${VCPKG_BINARY_CACHE_PATH} \
-             ${VCPKG_ASSET_CACHE_PATH}
+             ${VCPKG_ASSET_CACHE_PATH} && \
+    cd ${VCPKG_ROOT} && \
+    ./bootstrap-vcpkg.sh -disableMetrics
 
 ENV LLVM_TOOL_VERSION=20
 ENV LLVM_APT_BASE_URL=https://apt.llvm.org
