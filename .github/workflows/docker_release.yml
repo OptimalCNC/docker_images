@@ -42,7 +42,7 @@ jobs:
         with:
           context: .
           file: ./cpp_tools.Dockerfile
-          push: ${{ github.event_name == 'push' }}
+          push: true
           load: true
           build-args: |
             BASE_IMAGE=${{ matrix.base-image }}
