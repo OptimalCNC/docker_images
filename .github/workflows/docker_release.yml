@@ -43,7 +43,6 @@ jobs:
           context: .
           file: ./cpp_tools.Dockerfile
           push: ${{ github.event_name == 'push' }}
-          load: true
           build-args: |
             BASE_IMAGE=${{ matrix.base-image }}
           tags: |
@@ -55,7 +54,6 @@ jobs:
           context: .
           file: ./qt.Dockerfile
           push: false # should push after next step success
-          load: true
           build-args: |
             BASE_IMAGE=${{ env.IMAGE_URI }}:cpp_tools-${{ env.UBUNTU_VERSION }}
             QT_VERSION=${{ matrix.qt-version }}
